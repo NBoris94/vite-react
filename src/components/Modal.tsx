@@ -14,6 +14,8 @@ const Modal: FC<ModalProps> = ({
     children,
     onClose
 }) => {
+    //if (!isOpen) return null
+
     return createPortal(
         <div 
             className={`modal ${isOpen ? "modal_active" : ""}`} 

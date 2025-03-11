@@ -6,14 +6,16 @@ interface TodoListProps {
     title: string
     todoList: ITodo[]
     onChecked: (id: string) => void 
-    onDelete: (id: string) => void 
+    onDelete: (id: string) => void
+    onOpenModalUpdate: (id: string) => void 
 }
 
 const TodoList: FC<TodoListProps> = ({
     title,
     todoList,
     onChecked,
-    onDelete
+    onDelete,
+    onOpenModalUpdate
 }) => {
     if (todoList.length === 0) return null
 
@@ -28,6 +30,7 @@ const TodoList: FC<TodoListProps> = ({
                         {...todo}
                         onChecked={onChecked}
                         onDelete={onDelete}
+                        onOpenModalUpdate={onOpenModalUpdate}
                     />
                 </li>
             ))}
