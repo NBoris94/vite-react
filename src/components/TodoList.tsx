@@ -5,17 +5,11 @@ import Todo from './Todo'
 interface TodoListProps {
     title: string
     todoList: ITodo[]
-    onChecked: (id: string) => void 
-    onDelete: (id: string) => void
-    onOpenModalUpdate: (id: string) => void 
 }
 
 const TodoList: FC<TodoListProps> = ({
     title,
     todoList,
-    onChecked,
-    onDelete,
-    onOpenModalUpdate
 }) => {
     if (todoList.length === 0) return null
 
@@ -28,9 +22,6 @@ const TodoList: FC<TodoListProps> = ({
                 <li className="todos-list__item" key={todo.id}>
                     <Todo 
                         {...todo}
-                        onChecked={onChecked}
-                        onDelete={onDelete}
-                        onOpenModalUpdate={onOpenModalUpdate}
                     />
                 </li>
             ))}

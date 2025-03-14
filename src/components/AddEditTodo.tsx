@@ -2,13 +2,10 @@ import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import Modal from './Modal'
 import { ITodo } from '../interfaces/todo'
 import { nanoid } from 'nanoid'
+import useTodos from '../store/todos'
 
 interface AddEditTodoProps {
-    isOpen: boolean
-    todo?: ITodo
-    onClose: () => void
-    onAddTodo: (todo: ITodo) => void
-    onUpdateTodo: (todo: ITodo) => void
+
 }
 
 interface IFormState {
@@ -27,13 +24,12 @@ const INITIAL_FORM_ERROR_STATE: IFormState = {
     text: ""
 }
 
-const AddEditTodo: FC<AddEditTodoProps> = ({
-    isOpen,
-    todo,
-    onClose,
-    onAddTodo,
-    onUpdateTodo
-}) => {
+const AddEditTodo: FC<AddEditTodoProps> = () => {
+    const todo = useTodos(state => state.currentTodo)
+    const isOpenAddUpdateModal = useTodos(state => state.isOpenAddUpdateModal)
+    const addTodo = useTodos(state => state.addTodo)
+    const updateTodo = useTodos(state => state.updateTodo)
+    const closeModal = useTodos(state => state.closeModal)
     const [form, setForm] = useState<IFormState>(INITIAL_FORM_STATE)
     const [errors, setErrors] = useState<IFormErrorState>(INITIAL_FORM_ERROR_STATE)
 
@@ -74,7 +70,7 @@ const AddEditTodo: FC<AddEditTodoProps> = ({
             if (todo) {
                 const editedTodo = { ...todo, text: form.text }
 
-                onUpdateTodo(editedTodo)
+                updateTodo(editedTodo)
             }
             else {
                 const newTodo: ITodo = {
@@ -83,19 +79,19 @@ const AddEditTodo: FC<AddEditTodoProps> = ({
                     isComplete: false
                 }
 
-                onAddTodo(newTodo)
+                addTodo(newTodo)
             }
 
             setForm(INITIAL_FORM_STATE)
-            onClose()
+            closeModal()
         }
     }
 
     return (
         <Modal
-            isOpen={isOpen}
+            isOpen={isOpenAddUpdateModal}
             title={todo ? "Редактирование задачи" : "Добавление новой задачи"}
-            onClose={onClose}
+            onClose={closeModal}
         >
             <form 
                 className="form"
@@ -117,7 +113,7 @@ const AddEditTodo: FC<AddEditTodoProps> = ({
                     <button 
                         className="form__btn form__cancel btn-reset"
                         type="button"
-                        onClick={onClose}
+                        onClick={closeModal}
                     >
                         Отмена
                     </button>
